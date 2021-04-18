@@ -1,26 +1,32 @@
 <template>
   <div class="container">
-    <pagination-table
-      :paginationData="paginationData"
-      :total="total"
-      @onPageChange="onPageChange"
-    />
+    <pagination-table :paginationData="paginationData" />
+    <div class="page-controls">
+      <pagination-control
+        :pageInfo="pageInfo"
+        :total="total"
+        @onPageChange="onPageChange"
+      />
+    </div>
   </div>
 </template>
 
 <script>
 import Vue from "vue";
 import PaginationTable from "../components/PaginationTable";
+import PaginationControl from "../components/PaginationControl";
 import axios from "axios";
 
 export default Vue.extend({
   components: {
     PaginationTable,
+    PaginationControl,
   },
   data() {
     return {
       paginationData: [],
       total: 0,
+      pageInfo: { limit: 10, start: 0 },
     };
   },
   head() {
@@ -53,8 +59,15 @@ export default Vue.extend({
       }
     },
   },
+  created() {
+    this.onPageChange(this.pageInfo);
+  },
 });
 </script>
 
 <style>
+.page-controls {
+  text-align: right;
+  margin: 1em;
+}
 </style>
